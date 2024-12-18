@@ -1,0 +1,108 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def relu(x):
+    return np.maximum(0, x)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def tanh(x):
+    return np.tanh(x)
+
+def softmax(x):
+    exp_x = np.exp(x - np.max(x))  # For numerical stability
+    return exp_x / exp_x.sum()
+
+# 1. Take value of n, data type = float as an input from user and print it
+while True:
+    try:
+        n = float(input("Enter a floating-point number (n): "))
+        print(f"Value of n: {n}")
+        break
+    except ValueError:
+        print("Invalid input. Please enter a floating-point number.")
+
+# 2. Define an array and take its elements as input from the user
+array_size = int(input(f"Enter the size of the array (integer <= {int(n)}): "))
+array = []
+print("Enter the elements of the array:")
+for i in range(array_size):
+    element = float(input(f"Element {i + 1}: "))
+    array.append(element)
+array = np.array(array)
+print("Array:", array)
+
+# 3. Define a double-dimensional array (n x n), print its transpose matrix, and another 2D matrix (2 x n)
+n = int(n)  # Convert n to integer for matrix operations
+matrix = []
+print(f"Enter the elements of a {n}x{n} matrix row by row:")
+for i in range(n):
+    row = list(map(float, input(f"Row {i + 1}: ").split()))
+    if len(row) != n:
+        print("Row size mismatch. Please re-enter the row.")
+        row = list(map(float, input(f"Row {i + 1}: ").split()))
+    matrix.append(row)
+matrix = np.array(matrix)
+
+print("Matrix:")
+print(matrix)
+
+# Transpose matrix
+transpose_matrix = matrix.T
+print("Transpose Matrix:")
+print(transpose_matrix)
+
+# Sum of rows and columns
+sum_rows = np.sum(matrix, axis=1)
+sum_columns = np.sum(matrix, axis=0)
+sum_matrix = np.vstack((sum_rows, sum_columns))
+print("Matrix of sum of rows and columns (2 x n):")
+print(sum_matrix)
+
+# 4. Plot activation functions
+x = np.linspace(-100, 100, 500)
+
+# ReLU
+plt.figure(figsize=(8, 5))
+plt.plot(x, relu(x), label="ReLU", color="blue")
+plt.title("ReLU Activation Function")
+plt.xlabel("x")
+plt.ylabel("ReLU(x)")
+plt.grid()
+plt.legend()
+plt.show()
+
+# Sigmoid and Tanh
+plt.figure(figsize=(8, 5))
+plt.plot(x, sigmoid(x), label="Sigmoid", color="green")
+plt.plot(x, tanh(x), label="Tanh", color="red")
+plt.title("Sigmoid and Tanh Activation Functions")
+plt.xlabel("x")
+plt.ylabel("Activation")
+plt.grid()
+plt.legend()
+plt.show()
+
+# 5. Softmax and diagonal operations
+# Extract diagonal elements
+diagonal_elements = np.diag(matrix)
+print("Diagonal Elements:", diagonal_elements)
+
+# Softmax on diagonal elements
+softmax_diagonal = softmax(diagonal_elements)
+print("Softmax of Diagonal Elements:", softmax_diagonal)
+
+# Largest element on principal diagonal (without argmax)
+largest_element = max(diagonal_elements)
+print("Largest Element on Principal Diagonal:", largest_element)
+
+# Plot softmax vs diagonal elements
+plt.figure(figsize=(8, 5))
+plt.plot(diagonal_elements, softmax_diagonal, marker="o", label="Softmax")
+plt.title("Softmax vs Diagonal Elements")
+plt.xlabel("Diagonal Elements")
+plt.ylabel("Softmax Values")
+plt.grid()
+plt.legend()
+plt.show()
