@@ -9,11 +9,10 @@ data = pd.read_csv("heart.csv")
 
 
 def preprocess_data(data):
-    # Separate features and target
     X = data.drop(columns=["target"])
     y = data["target"].values
 
-    # Normalize features
+   
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
